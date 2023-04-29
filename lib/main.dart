@@ -1,40 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Counter App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Counter(),
+      title: 'Favorites List',
+      home: HomePage(),
     );
   }
 }
 
-class Counter extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _CounterState createState() => _CounterState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _CounterState extends State<Counter> {
-  int _count = 0;
+class _HomePageState extends State<HomePage> {
+  List<String> _favorites = [];
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
+
+  void _loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _count++;
+      _favorites = prefs.getStringList('favorites') ?? [];
     });
   }
 
-  void _decrementCounter() {
+  void _saveFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('favorites', _favorites);
+  }
+
+  void _toggleFavorite(String item) {
     setState(() {
-      _count--;
+      if (_favorites.contains(item)) {
+        _favorites.remove(item);
+      } else {
+        _favorites.add(item);
+      }
+      _saveFavorites();
     });
   }
 
@@ -42,42 +54,29 @@ class _CounterState extends State<Counter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Counter App'),
+        title: Text('Favorites List'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Count:',
-              style: TextStyle(fontSize: 24.0),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              '$_count',
-              style: TextStyle(fontSize: 48.0),
-            ),
-            SizedBox(height: 32.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  onPressed: _decrementCounter,
-                  tooltip: 'Decrement',
-                  child: Icon(Icons.remove),
-                ),
-                SizedBox(width: 16.0),
-                FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  tooltip: 'Increment',
-                  child: Icon(Icons.add),
-                ),
-              ],
-            ),
-          ],
-        ),
+      body: ListView(
+        children: ListTile.divideTiles(
+          context: context,
+          tiles: [
+            'Item 1',
+            'Item 2',
+            'Item 3',
+            'Item 4',
+            'Item 5',
+          ].map((item) {
+            return ListTile(
+              title: Text(item),
+              leading: Icon(
+                _favorites.contains(item) ? Icons.favorite : Icons.favorite_border,
+                color: _favorites.contains(item) ? Colors.red : null,
+              ),
+              onTap: () => _toggleFavorite(item),
+            );
+          }),
+        ).toList(),
       ),
     );
   }
 }
-
