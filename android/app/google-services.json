@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743616546022",
+    "project_id": "catapp-e03af",
+    "storage_bucket": "catapp-e03af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743616546022:android:c8f830314bdb41e87de727",
+        "android_client_info": {
+          "package_name": "com.example.smd_lab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743616546022-cmo7dlqpc283ojv5b4jv3qpu4rvfqcc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnvUM4twEi9WjO54uhUzDb-WmwtlDnUsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743616546022-cmo7dlqpc283ojv5b4jv3qpu4rvfqcc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
